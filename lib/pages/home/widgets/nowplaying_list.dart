@@ -4,7 +4,9 @@ import 'package:movie_app/widgets/custom_card_thumbnail.dart';
 
 class NowPlayingList extends StatefulWidget {
   final List<Movie> movies;
-  const NowPlayingList({super.key, required this.movies});
+  final Function(Movie) onTap; // Adicione isso
+
+  const NowPlayingList({super.key, required this.movies, required this.onTap});
 
   @override
   State<NowPlayingList> createState() => _NowPlayingListState();
@@ -21,23 +23,27 @@ class _NowPlayingListState extends State<NowPlayingList> {
     return Column(
       children: [
         SizedBox(
-            height: MediaQuery.of(context).size.height * 0.5,
-            child: PageView.builder(
-              controller: _pageController,
-              onPageChanged: (int page) {
-                setState(() {
-                  currentPage = page;
-                });
-              },
-              itemCount: widget.movies.length > maxItems
-                  ? maxItems
-                  : widget.movies.length,
-              itemBuilder: (context, index) {
-                return CustomCardThumbnail(
+          height: MediaQuery.of(context).size.height * 0.5,
+          child: PageView.builder(
+            controller: _pageController,
+            onPageChanged: (int page) {
+              setState(() {
+                currentPage = page;
+              });
+            },
+            itemCount: widget.movies.length > maxItems
+                ? maxItems
+                : widget.movies.length,
+            itemBuilder: (context, index) {
+              return GestureDetector( // Adicione GestureDetector
+                onTap: () => widget.onTap(widget.movies[index]), // Use onTap
+                child: CustomCardThumbnail(
                   imageAsset: widget.movies[index].posterPath,
-                );
-              },
-            )),
+                ),
+              );
+            },
+          ),
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: _buildPageIndicators(),

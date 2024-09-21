@@ -44,7 +44,17 @@ class _TopRatedPageState extends State<TopRatedPage> {
               return ListView.builder(
                 itemCount: movies.length,
                 itemBuilder: (context, index) {
-                  return TopRatedMovie(movie: movies[index]);
+                  final movie = movies[index];
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        '/movieDetail',
+                        arguments: movie,
+                      );
+                    },
+                    child: TopRatedMovie(movie: movie),
+                  );
                 },
               );
             }

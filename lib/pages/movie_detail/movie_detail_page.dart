@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // Adicionar o pacote para formatar datas
+import 'package:intl/intl.dart';
 import 'package:movie_app/models/movie_model.dart';
 
 class MovieDetailPage extends StatelessWidget {
@@ -9,7 +9,6 @@ class MovieDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final Movie movie = ModalRoute.of(context)!.settings.arguments as Movie;
 
-    // Formatar a data de lançamento se existir
     String formattedReleaseDate = movie.releaseDate != null
         ? DateFormat('dd/MM/yyyy').format(movie.releaseDate!)
         : 'Unknown';
@@ -22,7 +21,6 @@ class MovieDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Exibição da imagem do poster do filme
             Image.network(
               'https://image.tmdb.org/t/p/w500${movie.posterPath}',
               fit: BoxFit.cover,
@@ -34,7 +32,6 @@ class MovieDetailPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Título do filme
                   Text(
                     movie.title,
                     style: const TextStyle(
@@ -43,7 +40,6 @@ class MovieDetailPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  // Classificação do filme
                   Row(
                     children: [
                       const Icon(Icons.star, color: Colors.amber, size: 20),
@@ -55,7 +51,6 @@ class MovieDetailPage extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  // Overview do filme
                   const Text(
                     'Overview:',
                     style: TextStyle(
@@ -72,24 +67,19 @@ class MovieDetailPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  // Data de lançamento
                   Row(
                     children: [
                       const Text(
                         'Release Date:',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: TextStyle(fontSize: 16),
                       ),
-                      const SizedBox(width: 5),
+                      const SizedBox(width: 10),
                       Text(
                         formattedReleaseDate,
                         style: const TextStyle(fontSize: 16),
                       ),
                     ],
                   ),
-                  // Adicione mais detalhes aqui conforme necessário
                 ],
               ),
             ),

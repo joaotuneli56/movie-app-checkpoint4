@@ -61,15 +61,22 @@ class _HomePageState extends State<HomePage> {
                       );
                     }
                     if (snapshot.hasData) {
-                      return NowPlayingList(movies: snapshot.data!.movies);
+                      return NowPlayingList(
+                        movies: snapshot.data!.movies,
+                        onTap: (movie) {
+                          Navigator.pushNamed(
+                            context,
+                            '/movieDetail',
+                            arguments: movie,
+                          );
+                        },
+                      );
                     }
                     return const Center(
                       child: Text('No data found'),
                     );
                   }),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 child: Text(
@@ -96,6 +103,13 @@ class _HomePageState extends State<HomePage> {
                     }
                     return MoviesHorizontalList(
                       movies: snapshot.data!.movies,
+                      onTap: (movie) {
+                        Navigator.pushNamed(
+                          context,
+                          '/movieDetail',
+                          arguments: movie,
+                        );
+                      },
                     );
                   }),
               const Padding(
@@ -124,11 +138,16 @@ class _HomePageState extends State<HomePage> {
                     }
                     return MoviesHorizontalList(
                       movies: snapshot.data!.movies,
+                      onTap: (movie) {
+                        Navigator.pushNamed(
+                          context,
+                          '/movieDetail',
+                          arguments: movie,
+                        );
+                      },
                     );
                   }),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
             ],
           ),
         ),
