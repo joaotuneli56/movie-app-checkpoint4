@@ -1,37 +1,28 @@
 import 'package:flutter/material.dart';
 
-class OpinionModal extends StatefulWidget {
+class OpinionModal extends StatelessWidget {
   final Function(String) onSave;
 
-  OpinionModal({required this.onSave});
-
-  @override
-  _OpinionModalState createState() => _OpinionModalState();
-}
-
-class _OpinionModalState extends State<OpinionModal> {
-  final TextEditingController _controller = TextEditingController();
-
-  void _submitOpinion() {
-    if (_controller.text.isNotEmpty) {
-      widget.onSave(_controller.text);
-      Navigator.of(context).pop();
-    }
-  }
+  const OpinionModal({Key? key, required this.onSave}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController opinionController = TextEditingController();
+
     return AlertDialog(
-      title: Text('Adicionar Opinião'),
+      title: const Text('Adicionar Opinião'),
       content: TextField(
-        controller: _controller,
-        decoration: InputDecoration(labelText: 'Escreva sua opinião'),
-        maxLines: 4,
+        controller: opinionController,
+        decoration: const InputDecoration(hintText: 'Digite sua opinião aqui...'),
+        maxLines: 5,
       ),
       actions: [
         TextButton(
-          onPressed: _submitOpinion,
-          child: Text('Salvar'),
+          onPressed: () {
+            onSave(opinionController.text);
+            Navigator.of(context).pop();
+          },
+          child: const Text('Salvar'),
         ),
       ],
     );

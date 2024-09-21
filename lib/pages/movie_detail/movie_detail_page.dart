@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:movie_app/models/movie_model.dart';
 import 'package:movie_app/models/favorites.dart';
+import 'package:movie_app/models/review_model.dart';
 import 'package:movie_app/pages/movie_detail/widgets/opinion_modal.dart';
+import 'package:movie_app/pages/review/review_page.dart';
 
 class MovieDetailPage extends StatefulWidget {
   const MovieDetailPage({super.key});
@@ -14,6 +16,7 @@ class MovieDetailPage extends StatefulWidget {
 class _MovieDetailPageState extends State<MovieDetailPage> {
   bool _isFavorite = false;
   bool _isAdding = false;
+  List<Review> reviews = []; // Lista para armazenar as reviews
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +30,22 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
       showDialog(
         context: context,
         builder: (ctx) => OpinionModal(onSave: (opinion) {
-          print(opinion);
+          setState(() {
+            reviews.add(Review(
+              movieTitle: movie.title,
+              reviewText: opinion,
+              reviewDate: DateTime.now(),
+            ));
+          });
         }),
+      );
+    }
+
+    void _viewReviews() {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => ReviewsPage(reviews: reviews),
+        ),
       );
     }
 
@@ -115,36 +132,31 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  // Colocar os botões horizontalmente
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      // Botão "Adicionar Opinião" (Azul)
                       ElevatedButton(
                         onPressed: () => _showOpinionModal(context),
                         style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 40), // Botão maior
+                          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          backgroundColor: Colors.blue, // Cor azul
+                          backgroundColor: Colors.grey[800], // Cor escura
                         ),
                         child: const Text(
-                          'Adicionar Opinião',
-                          style: TextStyle(fontSize: 18), // Texto maior
+                          'Adicionar Review',
+                          style: TextStyle(fontSize: 18),
                         ),
                       ),
-                      // Botão "Adicionar à Minha Lista" (Verde)
                       ElevatedButton(
                         onPressed: _isAdding ? null : _addToFavorites,
                         style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 40), // Botão maior
+                          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          backgroundColor: _isAdding ? Colors.grey : Colors.green, // Cor verde
+                          backgroundColor: Colors.grey[800], // Mesma cor
                         ),
                         child: _isAdding
                             ? Row(
@@ -158,20 +170,23 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                                 ],
                               )
                             : const Text(
-                                'Adicionar à Minha Lista',
-                                style: TextStyle(fontSize: 18), // Texto maior
+                                'Adicionar à Watchlist',
+                                style: TextStyle(fontSize: 18),
                               ),
+                      ),
+                      ElevatedButton(
+                        onPressed: _viewReviews,
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          backgroundColor: Colors.grey[800], // Mesma cor
+                        ),
+                        child: const Text('Ver Reviews', style: TextStyle(fontSize: 18)),
                       ),
                     ],
                   ),
-                  if (_isFavorite) // Exibe mensagem de sucesso
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Text(
-                        'Filme adicionado à sua lista!',
-                        style: TextStyle(color: Colors.green),
-                      ),
-                    ),
                 ],
               ),
             ),
