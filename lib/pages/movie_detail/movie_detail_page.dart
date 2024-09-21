@@ -37,7 +37,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
         _isAdding = true;
       });
 
-      Favorites.addFavorite(movie); // Adicionando o objeto Movie
+      Favorites.addFavorite(movie);
 
       Future.delayed(const Duration(seconds: 1), () {
         setState(() {
@@ -115,26 +115,54 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () => _showOpinionModal(context),
-                    child: const Text('Adicionar Opinião'),
-                  ),
-                  const SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: _isAdding ? null : _addToFavorites,
-                    child: _isAdding
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const CircularProgressIndicator(
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                  // Colocar os botões horizontalmente
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      // Botão "Adicionar Opinião" (Azul)
+                      ElevatedButton(
+                        onPressed: () => _showOpinionModal(context),
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 40), // Botão maior
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          backgroundColor: Colors.blue, // Cor azul
+                        ),
+                        child: const Text(
+                          'Adicionar Opinião',
+                          style: TextStyle(fontSize: 18), // Texto maior
+                        ),
+                      ),
+                      // Botão "Adicionar à Minha Lista" (Verde)
+                      ElevatedButton(
+                        onPressed: _isAdding ? null : _addToFavorites,
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 40), // Botão maior
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          backgroundColor: _isAdding ? Colors.grey : Colors.green, // Cor verde
+                        ),
+                        child: _isAdding
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                  ),
+                                  SizedBox(width: 10),
+                                  Text('Adicionando...'),
+                                ],
+                              )
+                            : const Text(
+                                'Adicionar à Minha Lista',
+                                style: TextStyle(fontSize: 18), // Texto maior
                               ),
-                              const SizedBox(width: 10),
-                              const Text('Adicionando...'),
-                            ],
-                          )
-                        : const Text('Adicionar à Minha Lista'),
+                      ),
+                    ],
                   ),
                   if (_isFavorite) // Exibe mensagem de sucesso
                     Padding(
