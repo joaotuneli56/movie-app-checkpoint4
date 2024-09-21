@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         '/search': (context) => SearchPage(),  
         '/topRated': (context) => TopRatedPage(),  
         '/movieDetail': (context) => MovieDetailPage(),
-        '/my_list': (context) => MyListPage(),
+        '/my_list': (context) => WatchlistPage(),
       },
     );
   }

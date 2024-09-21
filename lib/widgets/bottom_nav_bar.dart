@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/pages/home/home_page.dart';
+import 'package:movie_app/pages/my_list/my_list_page.dart';
 import 'package:movie_app/pages/search/search_page.dart';
 import 'package:movie_app/pages/top_rated/top_rated_page.dart';
 
@@ -30,16 +31,20 @@ class _BottomNavBarState extends State<BottomNavBar> {
             HomePage(),
             SearchPage(),
             TopRatedPage(),
+            WatchlistPage(),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: paginaAtual,
           iconSize: 30,
+          selectedItemColor: Colors.blue,
+          unselectedItemColor: Colors.grey, 
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
             BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.trending_up), label: 'Top Rated'),
+            BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Watchlist'),
           ],
           onTap: (pagina) {
             pc.animateToPage(

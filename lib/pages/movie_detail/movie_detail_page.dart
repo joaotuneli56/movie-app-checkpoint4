@@ -37,11 +37,11 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
         _isAdding = true;
       });
 
-      Favorites.addFavorite(movie.id); 
+      Favorites.addFavorite(movie); // Adicionando o objeto Movie
 
       Future.delayed(const Duration(seconds: 1), () {
         setState(() {
-          _isAdding = false; 
+          _isAdding = false;
           _isFavorite = true;
         });
       });
@@ -127,7 +127,8 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const CircularProgressIndicator(
-                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.white),
                               ),
                               const SizedBox(width: 10),
                               const Text('Adicionando...'),

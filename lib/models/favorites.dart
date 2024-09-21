@@ -1,13 +1,16 @@
-class Favorites {
-  static List<int> favoriteMovieIds = [];
+import 'package:movie_app/models/movie_model.dart';
 
-  static void addFavorite(int movieId) {
-    if (!favoriteMovieIds.contains(movieId)) {
-      favoriteMovieIds.add(movieId);
+class Favorites {
+  static List<Movie> favoriteMovies = [];
+
+  static void addFavorite(Movie movie) {
+    if (!favoriteMovies.any((m) => m.id == movie.id)) {
+      favoriteMovies.add(movie);
     }
   }
-
-  static bool isFavorite(int movieId) {
-    return favoriteMovieIds.contains(movieId);
+  
+  static void removeFavorite(int movieId) {
+    favoriteMovies.removeWhere((movie) => movie.id == movieId);
   }
 }
+ 
