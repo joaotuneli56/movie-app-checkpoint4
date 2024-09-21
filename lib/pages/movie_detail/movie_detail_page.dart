@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:movie_app/models/movie_model.dart';
+import 'package:movie_app/models/favorites.dart';
+import 'package:movie_app/pages/movie_detail/widgets/opinion_modal.dart';
 
-class MovieDetailPage extends StatelessWidget {
+class MovieDetailPage extends StatefulWidget {
   const MovieDetailPage({super.key});
+
+  @override
+  _MovieDetailPageState createState() => _MovieDetailPageState();
+}
+
+class _MovieDetailPageState extends State<MovieDetailPage> {
+  bool _isFavorite = false;
+  bool _isAdding = false;
 
   @override
   Widget build(BuildContext context) {
@@ -12,6 +22,30 @@ class MovieDetailPage extends StatelessWidget {
     String formattedReleaseDate = movie.releaseDate != null
         ? DateFormat('dd/MM/yyyy').format(movie.releaseDate!)
         : 'Unknown';
+
+    void _showOpinionModal(BuildContext context) {
+      showDialog(
+        context: context,
+        builder: (ctx) => OpinionModal(onSave: (opinion) {
+          print(opinion);
+        }),
+      );
+    }
+
+    void _addToFavorites() {
+      setState(() {
+        _isAdding = true;
+      });
+
+      Favorites.addFavorite(movie.id); 
+
+      Future.delayed(const Duration(seconds: 1), () {
+        setState(() {
+          _isAdding = false; 
+          _isFavorite = true;
+        });
+      });
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -80,6 +114,35 @@ class MovieDetailPage extends StatelessWidget {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () => _showOpinionModal(context),
+                    child: const Text('Adicionar Opinião'),
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: _isAdding ? null : _addToFavorites,
+                    child: _isAdding
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                              ),
+                              const SizedBox(width: 10),
+                              const Text('Adicionando...'),
+                            ],
+                          )
+                        : const Text('Adicionar à Minha Lista'),
+                  ),
+                  if (_isFavorite) // Exibe mensagem de sucesso
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Text(
+                        'Filme adicionado à sua lista!',
+                        style: TextStyle(color: Colors.green),
+                      ),
+                    ),
                 ],
               ),
             ),
